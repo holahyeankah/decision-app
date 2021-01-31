@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": {
-    "npm": "10.x"
-  },
   "scripts": {
     "server": "live-server public/",
     "build-babel": "babel src/indecision.js --out-file=public/scripts/app.js --presets=env,react --watch",
