@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "server": "live-server public/",
-    "build-babel": "babel src/indecision.js --out-file=public/scripts/app.js --presets=env,react --watch",
-    "start": "webpack-dev-server",
-    "heroku-postbuild": "npm start"
+    "build-babel": "babel src/components/Indecision.js --out-file=public/scripts/app.js --presets=env,react --watch",
+    "build:prod": "webpack -p --env production",
+    "start": "node server/server.js",
+    "dev-server":"webpack-dev-server",
+    "heroku-postbuild": "npm run build:prod"
   },
- 
   "author": "yinka",
   "license": "ISC",
   "dependencies": {
@@ -19,6 +20,7 @@
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.4",
+    "express": "^4.17.1",
     "live-server": "^1.2.1",
     "node-sass": "^4.14.1",
     "normalize.css": "^7.0.0",

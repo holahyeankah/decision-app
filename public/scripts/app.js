@@ -1,6 +1,36 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Options = require('./Options');
+
+var _Options2 = _interopRequireDefault(_Options);
+
+var _Action = require('./Action');
+
+var _Action2 = _interopRequireDefault(_Action);
+
+var _AddOptions = require('./AddOptions');
+
+var _AddOptions2 = _interopRequireDefault(_AddOptions);
+
+var _OptionModal = require('./OptionModal');
+
+var _OptionModal2 = _interopRequireDefault(_OptionModal);
+
+var _Header = require('./Header');
+
+var _Header2 = _interopRequireDefault(_Header);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,8 +38,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Indecision = function (_React$Component) {
-    _inherits(Indecision, _React$Component);
+var Indecision = function (_Component) {
+    _inherits(Indecision, _Component);
 
     function Indecision(props) {
         _classCallCheck(this, Indecision);
@@ -17,12 +47,14 @@ var Indecision = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Indecision.__proto__ || Object.getPrototypeOf(Indecision)).call(this, props));
 
         _this.state = {
-            options: []
+            options: [],
+            selectedOption: undefined
         };
         _this.handleAdd = _this.handleAdd.bind(_this);
         _this.handleRemove = _this.handleRemove.bind(_this);
         _this.handlePick = _this.handlePick.bind(_this);
         _this.handleRemoveOne = _this.handleRemoveOne.bind(_this);
+        _this.onModal = _this.onModal.bind(_this);
         return _this;
     }
 
@@ -52,7 +84,6 @@ var Indecision = function (_React$Component) {
     }, {
         key: 'handleRemoveOne',
         value: function handleRemoveOne(optionToRemove) {
-            console.log('wee');
             this.setState(function (prevState) {
                 return {
                     options: prevState.options.filter(function (option) {
@@ -66,13 +97,13 @@ var Indecision = function (_React$Component) {
         value: function handlePick() {
             var number = Math.floor(Math.random() * this.state.options.length);
             var option = this.state.options[number];
-            alert(option);
+            this.setState({ selectedOption: option });
         }
     }, {
         key: 'handleAdd',
         value: function handleAdd(option) {
             if (!option) {
-                return "field is empty";
+                return 'Enter valid value to add item';
             } else if (this.state.options.indexOf(option) > -1) {
                 return "input already exist";
             }
@@ -83,174 +114,35 @@ var Indecision = function (_React$Component) {
             });
         }
     }, {
+        key: 'onModal',
+        value: function onModal() {
+
+            this.setState({ selectedOption: undefined });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return React.createElement(
+            return _react2.default.createElement(
                 'div',
                 null,
-                React.createElement(Action, { hasOption: this.state.options.length > 0, pick: this.handlePick }),
-                React.createElement(Options, { options: this.state.options, removeOption: this.handleRemoveOne, remove: this.handleRemove }),
-                React.createElement(AddOptions, { handleAdd: this.handleAdd })
+                _react2.default.createElement(_Header2.default, null),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement(_Action2.default, { hasOption: this.state.options.length > 0, pick: this.handlePick }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'widget' },
+                        _react2.default.createElement(_Options2.default, { options: this.state.options, removeOption: this.handleRemoveOne, remove: this.handleRemove }),
+                        _react2.default.createElement(_AddOptions2.default, { handleAdd: this.handleAdd })
+                    )
+                ),
+                _react2.default.createElement(_OptionModal2.default, { selectedOption: this.state.selectedOption, cancel: this.onModal })
             );
         }
     }]);
 
     return Indecision;
-}(React.Component);
+}(_react.Component);
 
-;
-
-var Action = function (_React$Component2) {
-    _inherits(Action, _React$Component2);
-
-    function Action(props) {
-        _classCallCheck(this, Action);
-
-        return _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).call(this, props));
-    }
-
-    _createClass(Action, [{
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'button',
-                    { onClick: this.props.pick, disabled: !this.props.hasOption
-                    },
-                    'What should i do'
-                )
-            );
-        }
-    }]);
-
-    return Action;
-}(React.Component);
-
-var Options = function (_React$Component3) {
-    _inherits(Options, _React$Component3);
-
-    function Options() {
-        _classCallCheck(this, Options);
-
-        return _possibleConstructorReturn(this, (Options.__proto__ || Object.getPrototypeOf(Options)).apply(this, arguments));
-    }
-
-    _createClass(Options, [{
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            console.log(this.props);
-            return React.createElement(
-                'div',
-                null,
-                this.props.options.length === 0 && React.createElement(
-                    'p',
-                    null,
-                    'Please select an option'
-                ),
-                React.createElement(
-                    'button',
-                    { onClick: this.props.remove },
-                    'Remove all'
-                ),
-                this.props.options.map(function (option) {
-                    return React.createElement(Option, { key: option, list: option, removeOption: _this4.props.removeOption });
-                })
-            );
-        }
-    }]);
-
-    return Options;
-}(React.Component);
-
-var Option = function (_React$Component4) {
-    _inherits(Option, _React$Component4);
-
-    function Option() {
-        _classCallCheck(this, Option);
-
-        return _possibleConstructorReturn(this, (Option.__proto__ || Object.getPrototypeOf(Option)).apply(this, arguments));
-    }
-
-    _createClass(Option, [{
-        key: 'render',
-        value: function render() {
-            var _this6 = this;
-
-            return React.createElement(
-                'div',
-                null,
-                this.props.list,
-                React.createElement(
-                    'button',
-                    { onClick: function onClick(e) {
-                            _this6.props.removeOption(_this6.props.list);
-                        } },
-                    'remove'
-                )
-            );
-        }
-    }]);
-
-    return Option;
-}(React.Component);
-
-var AddOptions = function (_React$Component5) {
-    _inherits(AddOptions, _React$Component5);
-
-    function AddOptions(props) {
-        _classCallCheck(this, AddOptions);
-
-        var _this7 = _possibleConstructorReturn(this, (AddOptions.__proto__ || Object.getPrototypeOf(AddOptions)).call(this, props));
-
-        _this7.state = {
-            error: undefined
-        };
-        _this7.handleSubmit = _this7.handleSubmit.bind(_this7);
-        return _this7;
-    }
-
-    _createClass(AddOptions, [{
-        key: 'handleSubmit',
-        value: function handleSubmit(e) {
-            e.preventDefault();
-            var option = e.target.elements.option.value.trim();
-            var error = this.props.handleAdd(option);
-            this.setState({ error: error });
-            if (!error) {
-                e.target.elements.option.value = '';
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-
-            return React.createElement(
-                'div',
-                null,
-                this.state.error && React.createElement(
-                    'p',
-                    null,
-                    this.state.error
-                ),
-                React.createElement(
-                    'form',
-                    { onSubmit: this.handleSubmit },
-                    React.createElement('input', { type: 'text', name: 'option' }),
-                    React.createElement(
-                        'button',
-                        null,
-                        'add option'
-                    )
-                )
-            );
-        }
-    }]);
-
-    return AddOptions;
-}(React.Component);
-
-ReactDOM.render(React.createElement(Indecision, null), document.getElementById('app'));
+exports.default = Indecision;
